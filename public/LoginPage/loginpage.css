@@ -1,0 +1,49 @@
+*{
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body,main{
+    display: flex;
+    justify-content: center;
+    width:100vw;
+    height:100vh;
+    margin: 0;
+}
+
+main{
+    background-color: white;
+    padding:10px;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+    height: fit-content;
+    padding:20px;
+    border-radius: 10px;
+}
+
+.login-input-label{
+    font-size: small;
+}
+.login-input{
+    width:300px;
+    height:30px;
+    outline:none;
+    border:1px solid grey;
+    padding:10px;
+}
+#login-input-error{
+    color:red;
+    font-size: small;
+    padding:0;
+    margin:0;
+}
+.btn{
+    outline:none;
+    background-color: black;
+    color:white;
+    border:none;
+    padding:10px;
+}

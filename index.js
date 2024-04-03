@@ -1,18 +1,43 @@
+//package imports
 import express from 'express'
 import { Server } from "socket.io"
 import path from 'path'
 import { fileURLToPath } from 'url'
+import dotenv from "dotenv";
+import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
+
+//module imports
+import { authRoutes } from './routes/auth.routes.js';
+import { messageRoutes } from './routes/message.routes.js';
+import { userRoutes } from './routes/user.routes.js';
+
+dotenv.config();
+const app = express()
+mongoose.connect(process.env.MONGODB_URI);
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-
 const PORT = process.env.PORT || 5000
 const ADMIN = "Admin"
 
-const app = express()
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
+app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, "public")))
+//backend route middlewares
+app.use("/api/auth", authRoutes);
+app.use("/api/message", messageRoutes);
+app.use("/api/user", userRoutes);
 
+
+//front-end route middlewares
+app.use('/', express.static(path.join(__dirname, 'public/Home')));
+app.use("/chat", express.static(path.join(__dirname, "public/ChatHome")));
+app.use("/auth/login", express.static(path.join(__dirname, "public/LoginPage")));
+app.use("/auth/signup", express.static(path.join(__dirname, "public/SignupPage")));
+
+//Server listen
 const expressServer = app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`)
 })
@@ -110,6 +135,7 @@ io.on('connection', socket => {
         }
     })
 })
+
 
 function buildMsg(name, text) {
     return {
